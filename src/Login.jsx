@@ -59,7 +59,11 @@ console.error('Error:',error);
                 <button type="submit"> Login </button>
             </form>
             <Link to="/">Back to Home</Link>
+
+            {message && <p>{message}</p>}
         </div>
+
+        
   )
 }
 
