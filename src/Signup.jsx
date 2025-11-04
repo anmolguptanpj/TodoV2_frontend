@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 import  {Link,useNavigate} from 'react-router-dom'
 
-function signup() {
+function Signup() {
   const navigate = useNavigate()
 
 
@@ -16,6 +16,14 @@ function signup() {
   );
 
   const[message,setMessage]=useState('');
+
+
+  useEffect(()=>{
+    const accessToken=localStorage.getItem('accessToken');
+    if(accessToken){
+      navigate('/todos')
+    }
+  },[navigate])
 
   const handlechange=(e)=>{
     setFormData({
@@ -33,11 +41,14 @@ function signup() {
         const response = await fetch("",{
           method:'POST',
           headers:{'Content-type':'application/json'},
-          body:JSON.stringify(formData)
+          body:JSON.stringify(formData),
+          credentials:'include'
         })
 
+        const data = await response.json()
+
         if(response.ok){
-          const data = await response.json()
+          localStorage.setItem('accessToken',data.accessToken);
           setMessage('Signup Successful! Redirecting...');
           console.log('Server response',data);
 
@@ -45,8 +56,7 @@ function signup() {
             navigate('/todos');
           },1500);
         } else {
-          const errorData = await response.json()
-          setMessage(errorData.message || 'Signup failed. Try again.');
+          setMessage(data.message || 'Signup failed. Try again.');
         }
 
       }catch(error){
@@ -55,12 +65,12 @@ function signup() {
       }
     };
 
-    
+
   return (
     <div>
             <h2>Signup Pages</h2>
             <form onSubmit={handleSubmit} >
-                <input type="text" placeholder='username' name="username" value ={formData.username} onChange={handlechange}/>
+                <input type="text" placeholder='Username' name="username" value ={formData.username} onChange={handlechange}/>
                 <input type="text" placeholder = "Name"  name="name" value ={formData.name} onChange={handlechange}/>
                 <input type="email" placeholder="Email"  name="email" value={formData.email} onChange={handlechange} />
                 <input type="password" placeholder="Password" name="password" value={formData.password} onChange={handlechange}/>
@@ -74,4 +84,5 @@ function signup() {
   )
 }
 
-export default signup
+
+export default Signup;
