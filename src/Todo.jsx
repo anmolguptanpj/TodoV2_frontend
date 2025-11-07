@@ -33,8 +33,10 @@ function Todo() {
     }
 
     if (isAuthenticated) fetchTodos();
-    else navigate("/"); // 🔁 Redirect to home if not logged in
-  }, [isAuthenticated, accessToken, navigate]);
+  }, [isAuthenticated, accessToken]);
+
+
+
 
   // ✅ Add new todo
   async function handleAddTodo() {

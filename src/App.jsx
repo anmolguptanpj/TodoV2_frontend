@@ -12,6 +12,8 @@ import PrivateRoute from "./components/PrivateRoute.jsx";
 function PublicRoute({ children }) {
   const { isAuthenticated } = useAuth();
   return isAuthenticated ? <Navigate to="/todos" replace /> : children;
+
+  
 }
 
 function App() {
