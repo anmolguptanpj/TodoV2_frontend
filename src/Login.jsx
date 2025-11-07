@@ -1,20 +1,31 @@
 import React, { useEffect,useState } from 'react'
-import  {Link,useNavigate} from 'react-router-dom'
+import  {Link} from 'react-router-dom'
+import { useAuth } from './Context/AuthContext'
+
 function Login() {
-  const navigate = useNavigate()
+  
+  
 
-  useEffect(()=>{
-    const accessToken = localStorage.getItem('accessToken');
-    if(accessToken){
-      navigate('/todos')
-    }
-  },[navigate])
-
-
+  const {login,isAuthenticated} = useAuth();
   const[formData,setFormData]=useState({
     identifier:'',
     password:'',
   })
+
+  useEffect(()=>{
+     if(isAuthenticated)window.location.href = "/todos";
+  },[isAuthenticated]);
+
+  
+const updatedFormData = formData.identifier.includes('@')
+    ? { email: formData.identifier, password: formData.password }
+    : { username: formData.identifier, password: formData.password };
+
+    
+
+
+
+ 
 
   const[message,setMessage]= useState('');
 
@@ -27,10 +38,10 @@ function Login() {
   const handleSubmit = async(e) =>{
     e.preventDefault();
     try{
-      const response = await fetch("",{
+      const response = await fetch("http://localhost:8000/api/v1/users/login",{
         method:'POST',
         headers:{'Content-type':'application/json'},
-        body:JSON.stringify(formData)
+        body:JSON.stringify(updatedFormData)
       })
 
       const data = await response.json()

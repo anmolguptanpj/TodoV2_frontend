@@ -8,8 +8,9 @@ function Signup() {
 
   const [formData,setFormData]=useState(
     { 
+      firstName:'',
+      lastName:'',
       username:'',
-      name:'',
       email:'',
       password:''
     }
@@ -38,7 +39,7 @@ function Signup() {
       e.preventDefault();
 
       try{
-        const response = await fetch("",{
+        const response = await fetch("http://localhost:8000/api/v1/users/register",{
           method:'POST',
           headers:{'Content-type':'application/json'},
           body:JSON.stringify(formData),
@@ -46,6 +47,7 @@ function Signup() {
         })
 
         const data = await response.json()
+        console.log('Server response',data);
 
         if(response.ok){
           localStorage.setItem('accessToken',data.accessToken);
@@ -70,8 +72,9 @@ function Signup() {
     <div>
             <h2>Signup Pages</h2>
             <form onSubmit={handleSubmit} >
+                <input type="text" placeholder='First Name' name="firstName" value ={formData.firstName} onChange={handlechange}/>
+                <input type="text" placeholder='Last Name' name="lastName" value ={formData.lastName} onChange={handlechange}/>
                 <input type="text" placeholder='Username' name="username" value ={formData.username} onChange={handlechange}/>
-                <input type="text" placeholder = "Name"  name="name" value ={formData.name} onChange={handlechange}/>
                 <input type="email" placeholder="Email"  name="email" value={formData.email} onChange={handlechange} />
                 <input type="password" placeholder="Password" name="password" value={formData.password} onChange={handlechange}/>
                 <button type="submit"> Signup </button>

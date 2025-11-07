@@ -14,7 +14,7 @@ function App() {
   useEffect(() => {
     async function fetchTodos() {
       try {
-        const response = await fetch('http://localhost:8000/todos');
+        const response = await fetch('http://localhost:8000/');
         const data = await response.json();
         setTodos(data); // ✅ directly set the array
       } catch (error) {

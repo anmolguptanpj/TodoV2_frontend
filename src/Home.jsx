@@ -1,7 +1,19 @@
-import React from 'react'
-import  {Link} from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { useAuth } from './Context/AuthContext.js'
+import  {Link, useNavigate } from 'react-router-dom'
 
 function home() {
+  const {isAuthenticated} = useAuth();
+  const navigate = useNavigate();
+
+
+  useEffect(()=>{
+    if(isAuthenticated,navigate){
+      navigate("/todos");
+    }
+  },[isAuthenticated, navigate]);
+
+  
   return (
     <div >
             <h1>Todo App</h1>
