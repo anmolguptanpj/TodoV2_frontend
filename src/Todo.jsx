@@ -1,162 +1,209 @@
-import React from 'react'
-import { useState } from 'react';
-import { useEffect } from 'react';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import "./App.css";
+import { useAuth } from "./Context/AuthContext.jsx";
+import { useNavigate } from "react-router-dom";
 
+function Todo() {
+  const { accessToken, logout, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
-function App() {
-    const[todo,setTodo]=useState('');
-    const[todos,setTodos]=useState([]);
-    const[editId,setEditID]=useState(null);
-    const[editValue,setEditValue]=useState("");
+  const [todo, setTodo] = useState("");
+  const [todos, setTodos] = useState([]);
+  const [editId, setEditId] = useState(null);
+  const [editValue, setEditValue] = useState("");
 
-  
   useEffect(() => {
+    
+
     async function fetchTodos() {
       try {
-        const response = await fetch('http://localhost:8000/');
+        const response = await fetch("http://localhost:8000/api/v1/todos", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
+        if (!response.ok) {
+          console.error("Failed to fetch todos:", response.status);
+          return;
+        }
+
         const data = await response.json();
-        setTodos(data); // ✅ directly set the array
+        // make sure it's an array before setting
+        setTodos(Array.isArray(data) ? data : []);
       } catch (error) {
-        console.error('Error fetching todos:', error);
+        console.error("Error fetching todos:", error);
       }
     }
+
     fetchTodos();
-  }, []);
+  }, [isAuthenticated, accessToken, navigate]);
 
+  async function handleAddTodo() {
+    if (todo.trim() === "") return;
 
+    try {
+      const newTodo = { title: todo.trim(), completed: false };
+      const response = await fetch("http://localhost:8000/api/v1/todos", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify(newTodo),
+      });
 
+      if (!response.ok) {
+        const err = await response.text();
+        console.error("Failed to add todo:", err);
+        return;
+      }
 
-
-    async function handleAddTodo() {
-        try {
-             if (todo.trim() === '') return;
-            const newTodo = {title : todo,completed:false};
-            const response = await fetch("http://localhost:8000/todos",{
-                method:'POST',
-                headers:{
-                    'Content-type':'application/json'
-                },
-                body:JSON.stringify(newTodo)
-            });
-            console.log("Todo Posted")
-             const data = await response.json();
-             setTodos([...todos,data]); // ✅ directly set the array
-            setTodo('')
-
-        } catch (error) {
-            console.error("Error sending Data",error)
-            
-        }
-    
-        
-
-
+      const created = await response.json();
+      setTodos((prev) => [...prev, created]);
+      setTodo("");
+    } catch (error) {
+      console.error("Error adding todo:", error);
     }
+  }
 
+  function handleEditClick(id, currentTitle) {
+    setEditId(id);
+    setEditValue(currentTitle);
+  }
 
-    function handleEditClick(id,currentTitle){
-        setEditID(id);
-        setEditValue(currentTitle);
+  async function handleSaveClick(id) {
+    if (editValue.trim() === "") return;
+
+    try {
+      const response = await fetch(`http://localhost:8000/api/v1/todos/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({ title: editValue.trim() }),
+      });
+
+      if (!response.ok) {
+        console.error("Failed to update todo:", response.status);
+        return;
+      }
+
+      const updatedTodo = await response.json();
+      setTodos((prev) => prev.map((t) => (t._id === id ? updatedTodo : t)));
+      setEditId(null);
+      setEditValue("");
+    } catch (error) {
+      console.error("Error editing todo:", error);
     }
+  }
 
+  async function handleCompleteTodo(id, currentStatus) {
+    try {
+      const response = await fetch(`http://localhost:8000/api/v1/todos/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({ completed: !currentStatus }),
+      });
 
+      if (!response.ok) {
+        console.error("Failed to toggle todo:", response.status);
+        return;
+      }
 
-
-    async function handleSaveClick(id) {
-        try { const response = await fetch(`http://localhost:8000/todos/${id}`,{
-            method:'PUT',
-            headers:{'Content-type':'application/json'},
-            body:JSON.stringify({title : editValue})
-        })
-            const updatedTodo = await response.json();
-            setTodos(todos.map((t)=>(t._id===id ? updatedTodo:t)));
-            setEditID(null);
-            setEditValue("");
-        } catch (error) {
-            console.error('Error Editing Todo :',error)
-            
-        }
+      const updatedTodo = await response.json();
+      setTodos((prev) => prev.map((t) => (t._id === id ? updatedTodo : t)));
+    } catch (error) {
+      console.error("Error updating todo:", error);
     }
+  }
 
-    async function handleCompleteTodo(id,currentStatus) {
-        try { const response = await fetch (`http://localhost:8000/todos/${id}`,{
-            method:'PUT',
-            headers:{'Content-type':'application/json'},
-            body:JSON.stringify({completed: !currentStatus})
-        });
-        const updatedTodo =await response.json();
-        setTodos(todos.map(t=>(t._id===id ? updatedTodo : t)));
-        } catch (error) {
-             console.error('Error updating Todo:',error)
-        }
-        
+  async function handleDeleteTodo(id) {
+    try {
+      const response = await fetch(`http://localhost:8000/api/v1/todos/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      if (!response.ok) {
+        console.error("Failed to delete todo:", response.status);
+        return;
+      }
+
+      setTodos((prev) => prev.filter((t) => t._id !== id));
+    } catch (error) {
+      console.error("Error deleting todo:", error);
     }
+  }
 
-    async function handleDeleteTodo (id) {
-        try{
-            const response = await fetch(`http://localhost:8000/todos/${id}`,{
-                method:'DELETE'
-            });
-            setTodos(todos.filter((t)=>(t._id !== id)));
-        } catch(error){
-            console.error('Error deleting todo:',error)
-        }
-
-        
-    }
-
-
+  function handleLogout() {
+    // AuthContext.logout already navigates to /login, so just call it
+    logout();
+  }
 
   return (
-    <div>
+    <div className="todo-container">
+      <div className="header">
+        <h2>Todo List</h2>
+        <button onClick={handleLogout} className="logout-btn">
+          Logout
+        </button>
+      </div>
+
+      <div className="input-section">
         <textarea
-        value={todo}
-        onChange={(e)=>setTodo(e.target.value)}
-        ></textarea>
-        <button onClick={handleAddTodo}>Add todo</button>
+          value={todo}
+          onChange={(e) => setTodo(e.target.value)}
+          placeholder="Enter your task..."
+        />
+        <button onClick={handleAddTodo}>Add Todo</button>
+      </div>
 
-       
-         <ul>
-          {todos.map((t)=>(  <li key ={t._id}>
-                <input
-                type="checkbox"
-                checked={t.completed}
-                onChange={()=>handleCompleteTodo(t._id,t.completed)}
-                />
-               
-                <input
-                type="text"
-                value={editId === t._id ? editValue : t.title}
-                onChange={(e)=>setEditValue(e.target.value)}
-                readOnly={editId !== t._id }
-                style={{
-                    marginLeft:"10px",textDecoration:t.completed?'line-through':'none',
-                    background:editId ===t._id ?"#fff": "transparent",
-                    border:editId === t._id ? "1px solid #aaa":"none"
-                }}
-                />  
-               {editId === t._id ? ( <button
-                onClick={()=>handleSaveClick(t._id)} 
-                >Save
-                </button>):(
-                <button
-                onClick={()=>handleEditClick(t._id,t.title)}
-                >
-                    Edit
+      <ul className="todo-list">
+        {todos.map((t) => (
+          <li key={t._id} className={t.completed ? "completed" : ""}>
+            <input
+              type="checkbox"
+              checked={!!t.completed}
+              onChange={() => handleCompleteTodo(t._id, !!t.completed)}
+            />
 
-                </button>)}
-                <button
-                onClick={()=>handleDeleteTodo(t._id)}
-                style={{marginLeft:'10px',color:'red'}}>
-                Delete
-                </button>
-             
-            </li>))}
-         </ul>
-    
+            <input
+              type="text"
+              value={editId === t._id ? editValue : t.title}
+              onChange={(e) => setEditValue(e.target.value)}
+              readOnly={editId !== t._id}
+              style={{
+                marginLeft: "10px",
+                textDecoration: t.completed ? "line-through" : "none",
+                background: editId === t._id ? "#fff" : "transparent",
+                border: editId === t._id ? "1px solid #aaa" : "none",
+              }}
+            />
+
+            {editId === t._id ? (
+              <button onClick={() => handleSaveClick(t._id)}>Save</button>
+            ) : (
+              <button onClick={() => handleEditClick(t._id, t.title)}>Edit</button>
+            )}
+
+            <button
+              onClick={() => handleDeleteTodo(t._id)}
+              style={{ marginLeft: "10px", color: "red" }}
+            >
+              Delete
+            </button>
+          </li>
+        ))}
+      </ul>
     </div>
-  )
+  );
 }
 
-export default App
+export default Todo;
