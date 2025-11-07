@@ -3,7 +3,8 @@ import { useState } from 'react'
 import  {Link,useNavigate} from 'react-router-dom'
 
 function Signup() {
-  const navigate = useNavigate()
+  const {Signup,isAuthenticated} = useAuth();
+  const navigate = useNavigate();
 
 
   const [formData,setFormData]=useState(
@@ -18,13 +19,9 @@ function Signup() {
 
   const[message,setMessage]=useState('');
 
-
   useEffect(()=>{
-    const accessToken=localStorage.getItem('accessToken');
-    if(accessToken){
-      navigate('/todos')
-    }
-  },[navigate])
+    if(isAuthenticated)navigate("/todos");
+  },[isAuthenticated.navigate]);
 
   const handlechange=(e)=>{
     setFormData({
@@ -50,7 +47,7 @@ function Signup() {
         console.log('Server response',data);
 
         if(response.ok){
-          localStorage.setItem('accessToken',data.accessToken);
+          Signup(data.accessToken);
           setMessage('Signup Successful! Redirecting...');
           console.log('Server response',data);
 
