@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
 
   const isAuthenticated = !!accessToken;
 
-  // Keep token in localStorage
+  // Persist token in localStorage
   useEffect(() => {
     if (accessToken) {
       localStorage.setItem("accessToken", accessToken);
@@ -32,10 +32,10 @@ export const AuthProvider = ({ children }) => {
     navigate("/todos");
   };
 
-  // Logout handler
+  // ✅ Logout handler (redirect to Home)
   const logout = () => {
     setAccessToken(null);
-    navigate("/login");
+    navigate("/"); // <-- changed from "/login" to "/"
   };
 
   return (

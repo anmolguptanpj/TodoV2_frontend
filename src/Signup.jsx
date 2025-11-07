@@ -46,14 +46,13 @@ function Signup() {
       const data = await response.json();
       console.log("Server response:", data);
 
-      if (response.ok && data.accessToken) {
-        setMessage("✅ Signup successful! Redirecting...");
-        signup(data.accessToken); // store token via AuthContext
-        // Add a small delay so user sees message
-        setTimeout(() => navigate("/todos"), 1000);
-      } else {
-        setMessage(data.message || "❌ Signup failed. Try again.");
-      }
+      if (response.ok && data.data?.accessToken) {
+  setMessage("✅ Signup successful! Redirecting...");
+  signup(data.data.accessToken);
+  setTimeout(() => navigate("/todos"), 1000);
+} else {
+  setMessage(data.message || "❌ Signup failed. Try again.");
+}
     } catch (error) {
       console.error("Error:", error);
       setMessage("⚠️ Something went wrong. Please try again later.");

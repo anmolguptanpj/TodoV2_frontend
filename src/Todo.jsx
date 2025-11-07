@@ -12,15 +12,12 @@ function Todo() {
   const [editId, setEditId] = useState(null);
   const [editValue, setEditValue] = useState("");
 
+  // ✅ Fetch todos when authenticated, else go home
   useEffect(() => {
-    
-
     async function fetchTodos() {
       try {
         const response = await fetch("http://localhost:8000/api/v1/todos", {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
+          headers: { Authorization: `Bearer ${accessToken}` },
         });
 
         if (!response.ok) {
@@ -29,28 +26,28 @@ function Todo() {
         }
 
         const data = await response.json();
-        // make sure it's an array before setting
         setTodos(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error("Error fetching todos:", error);
       }
     }
 
-    fetchTodos();
+    if (isAuthenticated) fetchTodos();
+    else navigate("/"); // 🔁 Redirect to home if not logged in
   }, [isAuthenticated, accessToken, navigate]);
 
+  // ✅ Add new todo
   async function handleAddTodo() {
     if (todo.trim() === "") return;
 
     try {
-      const newTodo = { title: todo.trim(), completed: false };
       const response = await fetch("http://localhost:8000/api/v1/todos", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
-        body: JSON.stringify(newTodo),
+        body: JSON.stringify({ title: todo.trim(), completed: false }),
       });
 
       if (!response.ok) {
@@ -67,7 +64,9 @@ function Todo() {
     }
   }
 
-  function handleEditClick(id, currentTitle) {
+  // ✅ Edit mode
+  function handleEditClick(id, currentTitle, completed) {
+    if (completed) return;
     setEditId(id);
     setEditValue(currentTitle);
   }
@@ -90,8 +89,8 @@ function Todo() {
         return;
       }
 
-      const updatedTodo = await response.json();
-      setTodos((prev) => prev.map((t) => (t._id === id ? updatedTodo : t)));
+      const updated = await response.json();
+      setTodos((prev) => prev.map((t) => (t._id === id ? updated : t)));
       setEditId(null);
       setEditValue("");
     } catch (error) {
@@ -99,6 +98,7 @@ function Todo() {
     }
   }
 
+  // ✅ Toggle complete
   async function handleCompleteTodo(id, currentStatus) {
     try {
       const response = await fetch(`http://localhost:8000/api/v1/todos/${id}`, {
@@ -115,20 +115,21 @@ function Todo() {
         return;
       }
 
-      const updatedTodo = await response.json();
-      setTodos((prev) => prev.map((t) => (t._id === id ? updatedTodo : t)));
+      const updated = await response.json();
+      setTodos((prev) => prev.map((t) => (t._id === id ? updated : t)));
     } catch (error) {
       console.error("Error updating todo:", error);
     }
   }
 
-  async function handleDeleteTodo(id) {
+  // ✅ Delete todo
+  async function handleDeleteTodo(id, completed) {
+    if (completed) return;
+
     try {
       const response = await fetch(`http://localhost:8000/api/v1/todos/${id}`, {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
+        headers: { Authorization: `Bearer ${accessToken}` },
       });
 
       if (!response.ok) {
@@ -142,9 +143,10 @@ function Todo() {
     }
   }
 
+  // ✅ Logout → clears todos + goes home
   function handleLogout() {
-    // AuthContext.logout already navigates to /login, so just call it
-    logout();
+    setTodos([]); // optional: clear local todos immediately
+    logout(); // AuthContext handles redirect to "/"
   }
 
   return (
@@ -178,7 +180,7 @@ function Todo() {
               type="text"
               value={editId === t._id ? editValue : t.title}
               onChange={(e) => setEditValue(e.target.value)}
-              readOnly={editId !== t._id}
+              readOnly={editId !== t._id || t.completed}
               style={{
                 marginLeft: "10px",
                 textDecoration: t.completed ? "line-through" : "none",
@@ -188,14 +190,26 @@ function Todo() {
             />
 
             {editId === t._id ? (
-              <button onClick={() => handleSaveClick(t._id)}>Save</button>
+              <button onClick={() => handleSaveClick(t._id)} disabled={t.completed}>
+                Save
+              </button>
             ) : (
-              <button onClick={() => handleEditClick(t._id, t.title)}>Edit</button>
+              <button
+                onClick={() => handleEditClick(t._id, t.title, t.completed)}
+                disabled={t.completed}
+              >
+                Edit
+              </button>
             )}
 
             <button
-              onClick={() => handleDeleteTodo(t._id)}
-              style={{ marginLeft: "10px", color: "red" }}
+              onClick={() => handleDeleteTodo(t._id, t.completed)}
+              disabled={t.completed}
+              style={{
+                marginLeft: "10px",
+                color: t.completed ? "gray" : "red",
+                cursor: t.completed ? "not-allowed" : "pointer",
+              }}
             >
               Delete
             </button>

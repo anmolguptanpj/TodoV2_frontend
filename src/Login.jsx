@@ -12,20 +12,23 @@ function Login() {
   });
   const [message, setMessage] = useState("");
 
-  // Redirect to /todos if already logged in
+  // ✅ Redirect if already logged in
   useEffect(() => {
     if (isAuthenticated) {
       navigate("/todos");
     }
   }, [isAuthenticated, navigate]);
 
+  // ✅ Handle input change
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // ✅ Handle submit (with backend structure awareness)
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Convert identifier into username/email
     const updatedFormData = formData.identifier.includes("@")
       ? { email: formData.identifier, password: formData.password }
       : { username: formData.identifier, password: formData.password };
@@ -34,20 +37,22 @@ function Login() {
       const response = await fetch("http://localhost:8000/api/v1/users/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include", // ✅ Important if using cookies
         body: JSON.stringify(updatedFormData),
       });
 
       const data = await response.json();
       console.log("Login response:", data);
 
-      if (response.ok && data.accessToken) {
+      // ✅ Match your backend structure -> data.data.accessToken
+      if (response.ok && data?.data?.accessToken) {
         setMessage("✅ Login Successful! Redirecting...");
-        login(data.accessToken); // Store token via AuthContext
+        login(data.data.accessToken); // Store token in context
 
-        // Redirect to /todos after short delay
+        // Redirect to /todos
         setTimeout(() => navigate("/todos"), 1000);
       } else {
-        setMessage(data.message || "❌ Invalid credentials. Please try again.");
+        setMessage(data?.message || "❌ Invalid credentials. Please try again.");
       }
     } catch (error) {
       console.error("Login Error:", error);
