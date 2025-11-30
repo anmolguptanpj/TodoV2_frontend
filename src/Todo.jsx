@@ -16,7 +16,7 @@ function Todo() {
   useEffect(() => {
     async function fetchTodos() {
       try {
-        const response = await fetch("http://localhost:8000/api/v1/todos", {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/todos`, {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
 
@@ -43,7 +43,7 @@ function Todo() {
     if (todo.trim() === "") return;
 
     try {
-      const response = await fetch("http://localhost:8000/api/v1/todos", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/todos`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -77,7 +77,7 @@ function Todo() {
     if (editValue.trim() === "") return;
 
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/todos/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/todos/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -103,7 +103,7 @@ function Todo() {
   // ✅ Toggle complete
   async function handleCompleteTodo(id, currentStatus) {
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/todos/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/todos/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -129,7 +129,7 @@ function Todo() {
     if (completed) return;
 
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/todos/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/todos/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${accessToken}` },
       });
