@@ -9,7 +9,7 @@ function forgot() {
   const [otp,setOtp] = useState("");
   const[newPassword,setNewPassword]=useState("");
   const [message,setMessage]=useState("");
-  const[loading,setLoading] = useState("false");
+  const[loading,setLoading] = useState(false);
 
 
 
@@ -19,7 +19,7 @@ function forgot() {
     setLoading(true);
     setMessage("");
     try {
-      const res = await fetch("",
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/users/forgot-password`,
         {
           method:'POST',
           headers:{'Content-type':'application/json'},
@@ -50,10 +50,10 @@ function forgot() {
     setLoading(true);
     setMessage("");
     try {
-      const res = await fetch("",{
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/users/verify-otp`,{
         method:"POST",
         headers:{'Content-type':'application/json'},
-        body:JSON.stringify("email,otp")
+        body:JSON.stringify({email,otp})
       });
 
       const data = await res.json();
@@ -66,6 +66,7 @@ function forgot() {
     } catch (error) {
       setMessage("SOmething went wrong")
     }
+     setLoading(false)
   }
 
   //STEP 3: RESET PASSWORD
@@ -73,10 +74,9 @@ function forgot() {
   const handleResetPassword = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage(true);
     setMessage("");
     try {
-      const res = await fetch(" ",{
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/users/reset-password`,{
         method:"POST",
         headers:{"Content-type":"application/json"},
         body: JSON.stringify({email,newPassword}),
@@ -92,9 +92,10 @@ function forgot() {
     } catch (error) {
       setMessage("Something went wrong");
       
-    }
-    setLoading(false)
   }
+      setLoading(false)
+    }
+   
 
   return (
     <div>
