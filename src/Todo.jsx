@@ -190,9 +190,8 @@ function Todo() {
                                                 />
                                                          </div>
 
-                                                <input
+                                                <textarea
                                                 className="lg:flex-1 bg-black "
-                                                type="text"
                                                   value={editId === t._id ? editValue : t.title}
                                                   onChange={(e) => setEditValue(e.target.value)}
                                                   readOnly={editId !== t._id || t.completed}
@@ -207,7 +206,7 @@ function Todo() {
                                                 
                                                    {editId === t._id ? (
                                                   <div className="flex rounded-xl  flex-row justify-center w-20" > 
-                                                    <button className="lg:w-30 lg:h-10 border-2 bg-green-500" onClick={() => handleSaveClick(t._id)} disabled={t.completed}>
+                                                    <button className="lg:w-30 w-20 lg:h-10 border-2 bg-green-500" onClick={() => handleSaveClick(t._id)} disabled={t.completed}>
                                                     Save
                                                   </button></div>
                                                 ) : (
