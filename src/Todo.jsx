@@ -191,7 +191,8 @@ function Todo() {
                                                 />
                                                          </div>
 
-                                                <textarea
+                                                <input
+                                                type="text"
                                                 className="lg:flex-1 bg-black "
                                                   value={editId === t._id ? editValue : t.title}
                                                   onChange={(e) => setEditValue(e.target.value)}
