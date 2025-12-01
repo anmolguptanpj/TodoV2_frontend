@@ -59,7 +59,7 @@ function Todo() {
       }
 
       const created = await response.json();
-      setTodos((prev) => [...prev, created]);
+      setTodos((prev) => [created,...prev]);
       setTodo("");
     } catch (error) {
       console.error("Error adding todo:", error);
