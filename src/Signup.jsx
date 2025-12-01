@@ -60,13 +60,16 @@ function Signup() {
   };
 
   return (
-    <div style={{ textAlign: "center", marginTop: "100px" }}>
-      <h2>Create an Account</h2>
-
-      <form
+    <div className="w-screen bg-[#7F0799] text-white h-screen flex flex-col"  >
+     <div className ="w-full text-2xl font-bold h-20 flex justify-center p-25"> <h2>Create an Account</h2></div>
+     <div className="w-full  flex justify-center">
+       <form
+       className="flex flex-col gap-6 border-2 p-20 rounded-2xl shadow-gray-500"
         onSubmit={handleSubmit}
       >
-        <input
+     <div>
+         <input
+         className="bg-white text-black border-2 border-black"
           type="text"
           placeholder="First Name"
           name="firstName"
@@ -74,14 +77,20 @@ function Signup() {
           onChange={handleChange}
           required
         />
-        <input
+     </div>
+      <div>
+          <input
+          className="bg-white  text-black border-2 border-black"
           type="text"
           placeholder="Last Name"
           name="lastName"
           value={formData.lastName}
           onChange={handleChange}
         />
-        <input
+      </div>
+      <div className="w-full  flex justify-center" > 
+         <input
+         className="bg-white  text-black border-2 border-black"
           type="text"
           placeholder="Username"
           name="username"
@@ -89,7 +98,10 @@ function Signup() {
           onChange={handleChange}
           required
         />
-        <input
+        </div>
+       <div>
+         <input
+         className="bg-white  text-black border-2 border-black"
           type="email"
           placeholder="Email"
           name="email"
@@ -97,7 +109,10 @@ function Signup() {
           onChange={handleChange}
           required
         />
-        <input
+       </div>
+        <div>
+          <input
+          className="bg-white  text-black border-2 border-black"
           type="password"
           placeholder="Password"
           name="password"
@@ -105,14 +120,22 @@ function Signup() {
           onChange={handleChange}
           required
         />
+        </div>
 
-        <button type="submit">Signup</button>
+        <button className="bg-green-500" type="submit">Signup</button>
       </form>
+     </div>
 
-      {message && <p >{message}</p>}
+      <div>{message && <p >{message}</p>}</div>
 
-      <nav >
-        <Link to="/">Home</Link> | <Link to="/login">Login</Link>
+      <nav  className="flex w-full  justify-center gap-5 p-10"  >
+        <div className=" hover:bg-[#3D518C] w-25 text-center rounded-xl bg-rose-700 pt-1 pl-3 pr-3 pb-1 border-0">
+          <Link to="/">Home</Link>
+          </div> 
+
+          <div className=" hover:bg-[#3D518C] w-25 text-center rounded-xl bg-rose-700 pt-1 pl-3 pr-3 pb-1 border-0" >
+            <Link to="/login">Login</Link>
+          </div>
       </nav>
     </div>
   );
