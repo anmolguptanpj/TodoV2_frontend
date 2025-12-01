@@ -163,7 +163,8 @@ function Todo() {
 
      
        <div  id="todoCreation" className="flex  mt-5 w-full flex-col justify-center pl-5 pr-5 lg:pl-20 lg:pr-20">
-                      <textarea
+                      <input
+                        type="text"
                         value={todo}
                         className="w-100%"
                         onChange={(e) => setTodo(e.target.value)}
@@ -205,8 +206,8 @@ function Todo() {
                                                <div className="flex flex-col justify-center items-center lg:flex-row ">
                                                 
                                                    {editId === t._id ? (
-                                                  <div className="flex rounded-xl  flex-row justify-center w-20" > 
-                                                    <button className="lg:w-30 w-20 lg:h-10 border-2 bg-green-500" onClick={() => handleSaveClick(t._id)} disabled={t.completed}>
+                                                  <div className="flex r  flex-row justify-center w-25" > 
+                                                    <button className="lg:w-30 w-20 rounded lg:h-10 border-2 bg-green-500" onClick={() => handleSaveClick(t._id)} disabled={t.completed}>
                                                     Save
                                                   </button></div>
                                                 ) : (
