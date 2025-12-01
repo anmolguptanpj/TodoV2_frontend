@@ -152,72 +152,97 @@ function Todo() {
   }
 
   return (
-    <div className="todo-container">
-      <div className="header">
-        <h2>Todo List</h2>
-        <button onClick={handleLogout} className="logout-btn">
-          Logout
-        </button>
-      </div>
+    <div className=" bg-black text-white w-screen h-screen flex flex-col ">
+     
+        <div className="w-full h-20 flex-col border-0  " id="header"> 
+             <div className="flex font-bold justify-center h-12 text-4xl "> <h2>Todo List</h2></div>
+           <div className=" font-bold flex justify-end pr-5"> <button className="w-20 bg-red-800 rounded-2xl" onClick={handleLogout} >
+              Logout
+            </button></div>
+       </div>
 
-      <div className="input-section">
-        <textarea
-          value={todo}
-          onChange={(e) => setTodo(e.target.value)}
-          placeholder="Enter your task..."
-        />
-        <button onClick={handleAddTodo}>Add Todo</button>
-      </div>
+     
+       <div  id="todoCreation" className="flex  mt-5 w-full flex-col justify-center pl-5 pr-5 lg:pl-20 lg:pr-20">
+                      <textarea
+                        value={todo}
+                        className="w-100%"
+                        onChange={(e) => setTodo(e.target.value)}
+                        placeholder="Enter your task..."
+                      />
+                      <div className="flex justify-end lg:justify-start pr-3">
+                        <button className="bg-green-400 w-20 pt-1 rounded " onClick={handleAddTodo}>Add Todo</button>
+                      </div>
+       </div>
+      
 
-      <ul className="todo-list">
-        {todos.map((t) => (
-          <li key={t._id} className={t.completed ? "completed" : ""}>
-            <input
-              type="checkbox"
-              checked={!!t.completed}
-              onChange={() => handleCompleteTodo(t._id, !!t.completed)}
-            />
+     <section className="flex flex-col w-full pl-5 pr-5  lg:pl-20 lg:pr-20 overflow-y-auto " id="wholetodosection ">
+                    <ul className="todo-list">
+                      {todos.map((t) => (
+                            
+                                      <li key={t._id} className={t.completed ? "completed" : ""}>
+                                                <div className="flex mt-5 h-20 justify-between w-full ">
+                                                         <div className="flex flex-col justify-center ">
+                                                           <input
+                                                          className="w-10 h-5"
+                                                  type="checkbox"
+                                                  checked={!!t.completed}
+                                                  onChange={() => handleCompleteTodo(t._id, !!t.completed)}
+                                                />
+                                                         </div>
 
-            <input
-              type="text"
-              value={editId === t._id ? editValue : t.title}
-              onChange={(e) => setEditValue(e.target.value)}
-              readOnly={editId !== t._id || t.completed}
-              style={{
-                marginLeft: "10px",
-                textDecoration: t.completed ? "line-through" : "none",
-                background: editId === t._id ? "#fff" : "transparent",
-                border: editId === t._id ? "1px solid #aaa" : "none",
-              }}
-            />
+                                                <input
+                                                className="lg:flex-1 bg-black "
+                                                type="text"
+                                                  value={editId === t._id ? editValue : t.title}
+                                                  onChange={(e) => setEditValue(e.target.value)}
+                                                  readOnly={editId !== t._id || t.completed}
+                                                  style={{
+                                                    textDecoration: t.completed ? "line-through" : "none",
+                                                  
+                                                    border: editId === t._id ? "1px solid #aaa" : "none",
+                                                  }}
+                                                />
 
-            {editId === t._id ? (
-              <button onClick={() => handleSaveClick(t._id)} disabled={t.completed}>
-                Save
-              </button>
-            ) : (
-              <button
-                onClick={() => handleEditClick(t._id, t.title, t.completed)}
-                disabled={t.completed}
-              >
-                Edit
-              </button>
-            )}
+                                               <div className="flex flex-col justify-center items-center lg:flex-row ">
+                                                
+                                                   {editId === t._id ? (
+                                                  <div className="flex rounded-xl  flex-row justify-center w-20" > 
+                                                    <button className="lg:w-30 lg:h-10 border-2 bg-green-500" onClick={() => handleSaveClick(t._id)} disabled={t.completed}>
+                                                    Save
+                                                  </button></div>
+                                                ) : (
+                                                 <div className="flex flex-row justify-center w-25" >
+                                                  <button
+                                                  className="lg:w-30 rounded-xl w-20 lg:h-10 border-2 border-black bg-blue-600"
+                                                    onClick={() => handleEditClick(t._id, t.title, t.completed)}
+                                                    disabled={t.completed}
+                                                  >
+                                                    Edit
+                                                  </button>
+                                                 </div>
+                                                )}
+                                          
 
-            <button
-              onClick={() => handleDeleteTodo(t._id, t.completed)}
-              disabled={t.completed}
-              style={{
-                marginLeft: "10px",
-                color: t.completed ? "gray" : "red",
-                cursor: t.completed ? "not-allowed" : "pointer",
-              }}
-            >
-              Delete
-            </button>
-          </li>
-        ))}
-      </ul>
+                                               <div className="flex flex-row justify-center w-25">
+                                                 <button
+                                                className="lg:w-30  w-20 rounded-xl lg:h-10 border-2 bg-purple-400 text-white border-black"
+                                                  onClick={() => handleDeleteTodo(t._id, t.completed)}
+                                                  disabled={t.completed}
+                                                  style={{
+                                                    color: t.completed ? "gray" : "red",
+                                                    cursor: t.completed ? "not-allowed" : "pointer",
+                                                  }}
+                                                >
+                                                  Delete
+                                                </button>
+                                               </div>
+                                               </div>
+                                                </div>
+                                              </li>
+                                
+                      ))}
+                    </ul>
+     </section>
     </div>
   );
 }
