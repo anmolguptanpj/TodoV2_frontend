@@ -13,17 +13,11 @@ function Home() {
   }, [isAuthenticated, navigate]);
 
   return (
-    <div style={{ textAlign: "center", marginTop: "100px" }}>
+    <div>
       <h1>Todo App</h1>
       <h2>Developed by Anmol Gupta</h2>
 
       <nav
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          gap: "20px",
-          marginTop: "30px",
-        }}
       >
         <Link to="/login">Login</Link>
         <Link to="/signup">Signup</Link>

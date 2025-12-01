@@ -65,13 +65,6 @@ function Signup() {
 
       <form
         onSubmit={handleSubmit}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "10px",
-          maxWidth: "300px",
-          margin: "auto",
-        }}
       >
         <input
           type="text"
@@ -116,9 +109,9 @@ function Signup() {
         <button type="submit">Signup</button>
       </form>
 
-      {message && <p style={{ marginTop: "10px" }}>{message}</p>}
+      {message && <p >{message}</p>}
 
-      <nav style={{ marginTop: "20px" }}>
+      <nav >
         <Link to="/">Home</Link> | <Link to="/login">Login</Link>
       </nav>
     </div>

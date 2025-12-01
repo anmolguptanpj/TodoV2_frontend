@@ -61,18 +61,12 @@ function Login() {
   };
 
   return (
-    <div style={{ textAlign: "center", marginTop: "100px" }}>
+    <div >
       <h2>Login to Your Account</h2>
 
       <form
         onSubmit={handleSubmit}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "10px",
-          maxWidth: "300px",
-          margin: "auto",
-        }}
+        
       >
         <input
           type="text"
@@ -95,9 +89,9 @@ function Login() {
         <button type="submit">Login</button>
       </form>
 
-      {message && <p style={{ marginTop: "10px" }}>{message}</p>}
+      {message && <p >{message}</p>}
 
-      <nav style={{ marginTop: "20px" }}>
+      <nav >
         <Link to="/">Home</Link> | <Link to="/signup">Signup</Link> |{" "}
         <Link to="/forgot">Forgot Password</Link>
       </nav>
