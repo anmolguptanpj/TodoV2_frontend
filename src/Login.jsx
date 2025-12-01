@@ -61,18 +61,18 @@ function Login() {
   };
 
   return (
-    <div className="w-screen bg-[#7F0799] text-white h-screen flex flex-col">
+    <div className="w-screen bg-[#b0aeb1] text-white h-screen flex flex-col">
      <div className="w-full text-2xl font-bold h-20 flex justify-center p-25"> <h2 >Login to Your Account</h2></div>
 
     <div className="w-full  flex justify-center"> 
        <form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-6 border-2 p-20 rounded-2xl shadow-gray-500"
+        className="flex flex-col  gap-6 border-2 p-20 rounded-2xl shadow-gray-500"
       >
       <div className="flex flex-col">
           <label>Enter username or email</label>
         <input
-          className="bg-white border-2 border-black"
+          className="bg-white border-2 text-black border-black"
           type="text"
           placeholder="Username or Email"
           name="identifier"
@@ -86,7 +86,7 @@ function Login() {
         <label>Enter Password</label>
          <input
           type="password"
-          className="bg-white border-2 border-black"
+          className="bg-white  text-black border-2 border-black"
           placeholder="Password"
           name="password"
           value={formData.password}
@@ -100,10 +100,10 @@ function Login() {
 
       {message && <p >{message}</p>}</div>
 
-     <div className="flex w-full  justify-center p-10"> <nav className=" flex " >
-       <div className=" hover:bg-[#3D518C] w-25 text-center rounded-xl bg-rose-700 pt-1 pl-3 pr-3 pb-1 border-0"> <Link to="/">Home</Link></div> 
-        <div className=" hover:bg-[#3D518C] w-25 text-center rounded-xl bg-rose-700 pt-1 pl-3 pr-3 pb-1 border-0" ><Link to="/signup">Signup</Link> </div>
-        <div className=" hover:bg-[#3D518C] w-40 text-center rounded-xl bg-rose-700 pt-1 pl-3 pr-3 pb-1 border-0" ><Link to="/forgot">Forgot Password</Link></div>
+     <div className="flex w-full  justify-center p-10"> <nav className=" flex  gap-2 " >
+        <Link className=" hover:bg-[#3D518C] w-25 text-center rounded-xl bg-rose-700 pt-1 pl-3 pr-3 pb-1 border-0" to="/">Home</Link>
+        <Link className=" hover:bg-[#3D518C] w-25 text-center rounded-xl bg-green-500 pt-1 pl-3 pr-3 pb-1 border-0" to="/signup">Signup</Link> 
+        <Link className=" hover:bg-[#3D518C] w-40 text-center rounded-xl bg-red-500 pt-1 pl-3 pr-3 pb-1 border-0" to="/forgot">Forgot Password</Link>
       </nav></div>
     </div>
   );

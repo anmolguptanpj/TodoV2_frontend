@@ -99,42 +99,46 @@ function forgot() {
 
   return (
     <div>
-      <div>
-        <h2>Forgot Password</h2>
-        {message && (<p>{message}</p>)}
-        {step === 1 && (
+      <div className='w-screen h-screen flex flex-col'>
+       <div className='flex h-40 w-full justify-center'> <h2 className='text-4xl p-10'>Forgot Password</h2></div>
+        {message && (<div className='flex flex-row justify-center'></div>)}
+        <div className='flex justify-center '>{step === 1 && (
           <form onSubmit={handleSendOtp}>
             <input
+            className='border-2'
             type="email"
             placeholder='Enter your email'
             value={email}
             onChange={(e)=> setEmail(e.target.value)}
             required
             />
-            <button>
+            <button className='ml-5 rounded-2xl w-30 text-center bg-green-500'>
               {loading ? "Sending..." : "Send OTP"}
             </button>
-        </form>)}
+        </form>)}</div>
 
         {step === 2 && (
-          <form onSubmit={handleVerifyOtp}>
+        <div className='flex h-40 w-full justify-center' >   <form onSubmit={handleVerifyOtp}>
             <input
              type='text'
+             className='border-2'
              placeholder='Enter OTP'
              value={otp}
              onChange={(e)=> setOtp(e.target.value)}
              required
              />
-             <button>
+             <button className='ml-5 rounded-2xl w-30 text-center bg-yellow-500' >
               {loading ? "Verifying..." : "Verify OTP"}
               </button>
-          </form>
+          </form></div>
         )}
 
         {
           step === 3 &&
-           (<form onSubmit={handleResetPassword}>
+           (<div className='flex h-40 w-full justify-center' >
+            <form onSubmit={handleResetPassword}>
             <input
+             className='border-2'
             type='password'
             placeholder='Enter new password'
             value={newPassword}
@@ -142,11 +146,13 @@ function forgot() {
             required
             />
             <button
+            className='ml-5 rounded-2xl w-30 text-center bg-blue-500'
             disabled={loading}
             type='submit'>
               {loading ? "Reseting... " : "Reset Password"}
             </button>
-          </form>)
+          </form>
+           </div>)
         }
 
 
@@ -154,9 +160,9 @@ function forgot() {
 
         {
           step === 4 && (
-            <div>
-              <p>
-                <Link to="/login">Go to Login </Link>
+            <div className='flex h-40 w-full justify-center' >
+              <p className='text-3xl font-bold' >
+                <Link className='ml-5 pl-2 pr-2 rounded-2xl w-30 text-center bg-orange-500' to="/login">Go to Login </Link>
               </p>
             </div>
           )
@@ -164,9 +170,11 @@ function forgot() {
 
         {
           step !==4 && (<p>
-            <Link to="/">
+            <div className='w-full justify-center  flex mt-10 '>
+              <Link className='ml-5 rounded-2xl w-30 text-center bg-rose-500'  to="/">
             Back to Home
             </Link>
+            </div>
           </p>)
         }
       </div>
