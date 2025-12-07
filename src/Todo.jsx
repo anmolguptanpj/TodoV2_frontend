@@ -166,7 +166,7 @@ function Todo() {
                       <input
                         type="text"
                         value={todo}
-                        className="w-100%"
+                        className="w-100% outline-none  "
                         onChange={(e) => setTodo(e.target.value)}
                         placeholder="Enter your task..."
                       />
@@ -184,7 +184,7 @@ function Todo() {
                                                 <div className="flex mt-5 h-20 justify-between w-full ">
                                                          <div className="flex flex-col justify-center ">
                                                            <input
-                                                          className="w-10 h-5"
+                                                          className="w-10 h-5  "
                                                   type="checkbox"
                                                   checked={!!t.completed}
                                                   onChange={() => handleCompleteTodo(t._id, !!t.completed)}
@@ -193,7 +193,7 @@ function Todo() {
 
                                                 <input
                                                 type="text"
-                                                className="lg:flex-1 bg-black "
+                                                className="lg:flex-1 bg-black outline-none  "
                                                   value={editId === t._id ? editValue : t.title}
                                                   onChange={(e) => setEditValue(e.target.value)}
                                                   readOnly={editId !== t._id || t.completed}
