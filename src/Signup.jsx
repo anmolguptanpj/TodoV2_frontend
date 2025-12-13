@@ -44,7 +44,6 @@ function Signup() {
       );
 
       const data = await response.json();
-      console.log("Server response:", data);
 
       if (response.ok && data.data?.accessToken) {
   setMessage("✅ Signup successful! Redirecting...");

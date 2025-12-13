@@ -42,7 +42,6 @@ function Login() {
       });
 
       const data = await response.json();
-      console.log("Login response:", data);
 
       // ✅ Match your backend structure -> data.data.accessToken
       if (response.ok && data?.data?.accessToken) {
