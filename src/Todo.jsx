@@ -26,8 +26,6 @@ function Todo() {
         }
 
         const data = await response.json();
-        console.log(data)
-         console.log(data.data)
         setTodos(Array.isArray(data?.data) ? data?.data : []);
       } catch (error) {
         console.error("Error fetching todos:", error);
@@ -95,7 +93,6 @@ function Todo() {
       }
 
       const data = await response.json();
-      console.log(data)
       const updated=data.data
       setTodos((prev) => prev.map((t) => (t._id === id ? updated : t)));
       setEditId(null);
@@ -122,7 +119,8 @@ function Todo() {
         return;
       }
 
-      const updated = await response.json();
+      const data = await response.json();
+      const updated = data.data
       setTodos((prev) => prev.map((t) => (t._id === id ? updated : t)));
     } catch (error) {
       console.error("Error updating todo:", error);
