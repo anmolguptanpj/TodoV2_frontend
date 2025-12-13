@@ -26,7 +26,9 @@ function Todo() {
         }
 
         const data = await response.json();
-        setTodos(Array.isArray(data) ? data : []);
+        console.log(data)
+         console.log(data.data)
+        setTodos(Array.isArray(data?.data) ? data?.data : []);
       } catch (error) {
         console.error("Error fetching todos:", error);
       }
@@ -58,7 +60,8 @@ function Todo() {
         return;
       }
 
-      const created = await response.json();
+      const data = await response.json();
+      const created = data.data
       setTodos((prev) => [created,...prev]);
       setTodo("");
     } catch (error) {
@@ -91,7 +94,9 @@ function Todo() {
         return;
       }
 
-      const updated = await response.json();
+      const data = await response.json();
+      console.log(data)
+      const updated=data.data
       setTodos((prev) => prev.map((t) => (t._id === id ? updated : t)));
       setEditId(null);
       setEditValue("");
