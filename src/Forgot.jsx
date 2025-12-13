@@ -10,6 +10,7 @@ function forgot() {
   const[newPassword,setNewPassword]=useState("");
   const [message,setMessage]=useState("");
   const[loading,setLoading] = useState(false);
+  const[show,setShow] = useState("false")
 
 
 
@@ -136,16 +137,18 @@ function forgot() {
 
         {
           step === 3 &&
-           (<div className='flex h-40 w-full justify-center' >
+           (<div className='flex flex-col items-center h-40 w-full justify-center' >
             <form onSubmit={handleResetPassword}>
             <input
              className='border-2'
-            type='password'
+            type={show ? "text":'password'}
             placeholder='Enter new password'
             value={newPassword}
             onChange={(e)=>setNewPassword(e.target.value)}
             required
             />
+            <div><label>Show password</label> <input type='checkbox' value={show} onClick={()=>{setShow(prev=>!prev)}}/></div>
+
             <button
             className='ml-5 rounded-2xl w-30 text-center bg-blue-500'
             disabled={loading}

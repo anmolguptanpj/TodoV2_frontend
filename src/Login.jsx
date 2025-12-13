@@ -5,6 +5,7 @@ import { useAuth } from "./Context/AuthContext.jsx";
 function Login() {
   const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const [show,setShow] = useState(false)
 
   const [formData, setFormData] = useState({
     identifier: "",
@@ -85,7 +86,7 @@ function Login() {
        <div className="flex flex-col">
         <label>Enter Password</label>
          <input
-          type="password"
+          type={show ? "text" : "password"}
           className="bg-white  text-black border-2 border-black"
           placeholder="Password"
           name="password"
@@ -93,12 +94,14 @@ function Login() {
           onChange={handleChange}
           required
         />
+<div className="flex gap-3"> <label htmlFor="show">Show password</label>< input type="checkbox" value={show} onClick={()=>setShow(prev=> !prev)} /></div>
+ <div> {message && <p >{message}</p>}</div>
        </div>
 
         <button className="bg-green-500" type="submit">Login</button>
       </form>
 
-      {message && <p >{message}</p>}</div>
+     </div>
 
      <div className="flex w-full  justify-center p-10"> <nav className=" flex  gap-2 " >
         <Link className=" hover:bg-[#3D518C] w-25 text-center rounded-xl bg-rose-700 pt-1 pl-3 pr-3 pb-1 border-0" to="/">Home</Link>

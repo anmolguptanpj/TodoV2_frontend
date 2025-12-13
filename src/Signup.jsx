@@ -5,6 +5,7 @@ import { useAuth } from "./Context/AuthContext.jsx";
 function Signup() {
   const { signup, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const [show ,setShow] = useState(false)
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -87,16 +88,17 @@ function Signup() {
           onChange={handleChange}
         />
       </div>
-      <div className="w-full  flex justify-center" > 
+      <div className="w-full  flex-col justify-center items-center" > 
          <input
          className="bg-white  text-black border-2 border-black"
-          type="text"
+          type={"text"}
           placeholder="Username"
           name="username"
           value={formData.username}
           onChange={handleChange}
           required
         />
+      
         </div>
        <div>
          <input
@@ -109,23 +111,25 @@ function Signup() {
           required
         />
        </div>
-        <div>
+        <div className="flex  flex-col gap-2">
           <input
           className="bg-white  text-black border-2 border-black"
-          type="password"
+          type={show ? "text" : "password"}
           placeholder="Password"
           name="password"
           value={formData.password}
           onChange={handleChange}
           required
         />
+         <div className="flex gap-3"> <label htmlFor="show">Show password</label>< input type="checkbox" value={show} onClick={()=>setShow(prev=> !prev)} /></div>
+         <div>{message && <p >{message}</p>}</div>
         </div>
 
         <button className="bg-green-500" type="submit">Signup</button>
       </form>
      </div>
 
-      <div>{message && <p >{message}</p>}</div>
+     
 
       <nav  className="flex w-full  justify-center gap-5 p-10"  >
         <div className=" hover:bg-[#3D518C] w-25 text-center rounded-xl bg-rose-700 pt-1 pl-3 pr-3 pb-1 border-0">
