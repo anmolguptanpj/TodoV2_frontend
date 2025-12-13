@@ -62,7 +62,7 @@ function Login() {
   
 
   return (
-    <div className="w-screen bg-[#b0aeb1] text-white h-screen flex flex-col">
+    <div className="w-screen bg-black text-white h-screen flex flex-col">
      <div className="w-full text-2xl font-bold h-20 flex justify-center p-25"> <h2 >Login to Your Account</h2></div>
 
     <div className="w-full  flex justify-center"> 

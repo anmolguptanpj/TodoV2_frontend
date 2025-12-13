@@ -60,7 +60,7 @@ function Signup() {
   };
 
   return (
-    <div className="w-screen bg-[#7F0799] text-white h-screen flex flex-col"  >
+    <div className="w-screen bg-black text-white h-screen flex flex-col"  >
      <div className ="w-full text-2xl font-bold h-20 flex justify-center p-25"> <h2>Create an Account</h2></div>
      <div className="w-full  flex justify-center">
        <form

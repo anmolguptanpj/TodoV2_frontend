@@ -13,7 +13,7 @@ function Home() {
   }, [isAuthenticated, navigate]);
 
   return (
-    <div className="bg-[#edd5f3] w-screen h-screen">
+    <div className="bg-black text-white w-screen h-screen">
       <div className="h-100 flex flex-col justify-center items-center">
       <h1 className=" underline text-7xl pt-20">Todo App</h1>
       <h2 className="text-4xl pt-5 ">Developed by Anmol Gupta</h2>

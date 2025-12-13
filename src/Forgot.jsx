@@ -96,10 +96,11 @@ function forgot() {
       setLoading(false)
     }
    
+  
 
   return (
     <div>
-      <div className='w-screen h-screen flex flex-col'>
+      <div className=' bg-black text-white w-screen h-screen flex flex-col'>
        <div className='flex h-40 w-full justify-center'> <h2 className='text-4xl p-10'>Forgot Password</h2></div>
         {message && (<div className='flex flex-row justify-center'></div>)}
         <div className='flex justify-center '>{step === 1 && (
@@ -153,6 +154,7 @@ function forgot() {
             </button>
           </form>
            </div>)
+
         }
 
 
@@ -174,6 +176,8 @@ function forgot() {
               <Link className='ml-5 rounded-2xl w-30 text-center bg-rose-500'  to="/">
             Back to Home
             </Link>
+
+            {message && <p>{message}</p>}
             </div>
           </p>)
         }
